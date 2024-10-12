@@ -180,11 +180,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4823381824983396506, guid: 4795614a12d974f928f80de111c41e48,
-        type: 3}
-      propertyPath: _bombThrowForce
-      value: 1000
-      objectReference: {fileID: 0}
     - target: {fileID: 8258135699159191644, guid: 4795614a12d974f928f80de111c41e48,
         type: 3}
       propertyPath: m_Name
@@ -352,7 +347,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _followSpeed: 10
-  _zoomLimits: {x: 10, y: 50}
+  _zoomLimits: {x: 20, y: 50}
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
