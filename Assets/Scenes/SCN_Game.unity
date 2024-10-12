@@ -180,6 +180,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4823381824983396506, guid: 4795614a12d974f928f80de111c41e48,
+        type: 3}
+      propertyPath: _bombThrowForce
+      value: 1000
+      objectReference: {fileID: 0}
     - target: {fileID: 8258135699159191644, guid: 4795614a12d974f928f80de111c41e48,
         type: 3}
       propertyPath: m_Name
@@ -630,6 +635,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2078845405}
   - component: {fileID: 2078845406}
+  - component: {fileID: 2078845407}
   m_Layer: 0
   m_Name: '@Game Core'
   m_TagString: GameController
@@ -666,7 +672,51 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Players>k__BackingField:
   - {fileID: 239169514}
-  - {fileID: 0}
+--- !u!114 &2078845407
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2078845404}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 621567455fd1c4ceb811cc8a00b6a1a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_NotificationBehavior: 0
+  m_MaxPlayerCount: -1
+  m_AllowJoining: 1
+  m_JoinBehavior: 0
+  m_PlayerJoinedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_PlayerLeftEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_JoinAction:
+    m_UseReference: 0
+    m_Action:
+      m_Name: 
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: 4dcf46f3-3524-469b-83d3-6c207253bbe9
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings: []
+      m_Flags: 0
+    m_Reference: {fileID: 0}
+  m_PlayerPrefab: {fileID: 8258135699159191644, guid: 4795614a12d974f928f80de111c41e48,
+    type: 3}
+  m_SplitScreen: 0
+  m_MaintainAspectRatioInSplitScreen: 0
+  m_FixedNumberOfSplitScreens: -1
+  m_SplitScreenRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

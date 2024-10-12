@@ -23,43 +23,86 @@ public class PlayerController : MonoBehaviour
 
     [Header("References")]
     [SerializeField] Transform _groundCheckPoint;
+    [SerializeField] PlayerBombThrow _thrower;
+    [SerializeField] PlayerInput _inputs;
 
-    GameInputSettings _input;
+    InputActionMap _playerInput;
     Vector2 _inputVec;
     Rigidbody _rb;
 
     bool _isJumping = false;
+    Vector3 _prevVel;
 
     void Awake()
     {
         _rb = GetComponent<Rigidbody>();
+        _playerInput = _inputs.actions.FindActionMap("Player");
+        _thrower.IsMouse = _inputs.currentControlScheme == "Keyboard&Mouse";
 
-        _input = new GameInputSettings();
-        _input.Player.Move.performed += OnMovePerformed;
-        _input.Player.Move.canceled += OnMoveCancelled;
-        _input.Player.Jump.performed += OnJumpPerformed;
+        _playerInput.FindAction("Move").performed += OnMovePerformed;
+        _playerInput.FindAction("Move").canceled += OnMoveCancelled;
+        _playerInput.FindAction("Jump").performed += OnJumpPerformed;
+
+        _playerInput.FindAction("Aim").performed += OnAimPerformed;
+
+        _playerInput.FindAction("Fire").performed += OnFirePerformed;
+        _playerInput.FindAction("Fire").canceled += OnFireCancelled;
     }
+
+    private void OnAimPerformed(InputAction.CallbackContext context)
+    {
+        _thrower.InputVector = context.ReadValue<Vector2>();
+    }
+
     private void OnEnable()
     {
-        _input.Enable();
+        _playerInput.Enable();
     }
 
     private void OnDisable()
     {
-        _input.Disable();
-        _input.Player.Move.performed -= OnMovePerformed;
-        _input.Player.Move.canceled -= OnMovePerformed;
-        _input.Player.Jump.performed -= OnJumpPerformed;
-        _input.Dispose();
+        _playerInput.Disable();
+        _playerInput.FindAction("Move").performed -= OnMovePerformed;
+        _playerInput.FindAction("Move").canceled -= OnMoveCancelled;
+        _playerInput.FindAction("Jump").performed -= OnJumpPerformed;
+
+        _playerInput.FindAction("Aim").performed -= OnAimPerformed;
+
+        _playerInput.FindAction("Fire").performed -= OnFirePerformed;
+        _playerInput.FindAction("Fire").canceled -= OnFireCancelled;
+        _playerInput.Dispose();
     }
 
-    private void OnMovePerformed(InputAction.CallbackContext context) =>
+    private void OnFirePerformed(InputAction.CallbackContext context)
+    {
+        _thrower.StartAiming();
+
+        _rb.useGravity = false;
+        _prevVel = _rb.velocity;
+        _rb.velocity = Vector3.zero;
+    }
+
+    private void OnFireCancelled(InputAction.CallbackContext context)
+    {
+        _thrower.EndAiming();
+
+        _rb.useGravity = true;
+        _rb.velocity = _prevVel;
+    }
+
+    private void OnMovePerformed(InputAction.CallbackContext context)
+    {
         _inputVec = context.ReadValue<Vector2>();
+        if (_inputVec.y > 0) Jump();
+    }
+
     private void OnMoveCancelled(InputAction.CallbackContext ctx) => _inputVec = Vector2.zero;
 
-    private void OnJumpPerformed(InputAction.CallbackContext context)
+    private void OnJumpPerformed(InputAction.CallbackContext context) => Jump();
+
+    void Jump()
     {
-        if (_lastOnGroundTime > 0 && !_isJumping)
+        if (_lastOnGroundTime > 0 && !_isJumping && !_thrower.IsAiming)
         {
             _isJumping = true;
             _lastOnGroundTime = 0;
@@ -85,6 +128,8 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (_thrower.IsAiming) return;
+
         var trgSpeed = _inputVec.x * _moveSpeed;
         trgSpeed = Mathf.Lerp(_rb.velocity.x, trgSpeed, 1);
         var speedDiff = trgSpeed - _rb.velocity.x;
