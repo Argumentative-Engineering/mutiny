@@ -54,7 +54,6 @@ public class GameManager : MonoBehaviour
         input.GetComponent<Rigidbody>().position = spawn.position;
 
         var number = Players.Count - 1;
-        input.transform.name = $"Player {number + 1}";
         input.GetComponent<PlayerInfo>().SetColor(number, _playerColors[number]);
 
         var health = Instantiate(_healthBarPrefab, _healthBarsUIGroup.transform).GetComponent<PlayerHealthUI>();

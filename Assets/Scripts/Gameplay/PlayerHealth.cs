@@ -3,14 +3,6 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-public enum PlayerColor
-{
-    Red,
-    Blue,
-    Yellow,
-    Green
-}
-
 public class PlayerHealth : MonoBehaviour
 {
     public float Health { get; set; } = 100;
@@ -51,7 +43,6 @@ public class PlayerHealth : MonoBehaviour
 
     public void Die(Vector3 dir)
     {
-        print("DIE");
         var rb = GetComponent<Rigidbody>();
         rb.constraints = RigidbodyConstraints.None;
         rb.AddForce((dir + -Vector3.forward) * 100, ForceMode.Impulse);

@@ -20,7 +20,7 @@ public class PlayerHealthUI : MonoBehaviour
     public void UpdateText()
     {
         _bgUI.color = Player.MaterialColor;
-        _colorUIText.text = Player.TeamColor.ToString();
+        _colorUIText.text = Player.transform.name;
         _healthUIText.text = PlayerHealth.Health.ToString("N1");
     }
 

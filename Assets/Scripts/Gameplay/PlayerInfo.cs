@@ -4,14 +4,13 @@ using UnityEngine;
 
 public class PlayerInfo : MonoBehaviour
 {
-    public PlayerColor TeamColor { get; set; }
     public Color MaterialColor { get; set; }
     [SerializeField] Renderer _renderer;
 
     public void SetColor(int index, Color color)
     {
-        TeamColor = (PlayerColor)index;
+        transform.name = $"Player {index + 1}";
         MaterialColor = color;
-        _renderer.material.SetColor("BaseColor", color);
+        _renderer.material.color = color;
     }
 }
