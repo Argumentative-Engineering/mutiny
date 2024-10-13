@@ -19,7 +19,7 @@ public class PlayerController : MonoBehaviour
     [Header("Collision")]
     [SerializeField] Vector3 _groundCheckSize;
     [SerializeField] LayerMask _groundLayer;
-    float _lastOnGroundTime = 0.5f;
+    float _coyoteTimer = 0.5f;
 
     [Header("References")]
     [SerializeField] Transform _groundCheckPoint;
@@ -35,7 +35,7 @@ public class PlayerController : MonoBehaviour
     Vector2 _inputVec;
     Rigidbody _rb;
 
-    bool _isJumping = false;
+    int _jumpCount = 0;
     Vector3 _prevVel;
 
     void Awake()
@@ -100,7 +100,7 @@ public class PlayerController : MonoBehaviour
     {
         if (IsStunned) return;
         _inputVec = context.ReadValue<Vector2>();
-        if (_inputVec.y > 0.7f) Jump();
+        // if (_inputVec.y > 0.7f) Jump();
     }
 
     private void OnMoveCancelled(InputAction.CallbackContext ctx) => _inputVec = Vector2.zero;
@@ -109,16 +109,15 @@ public class PlayerController : MonoBehaviour
 
     void Jump()
     {
-        if (_lastOnGroundTime > 0 && !_isJumping && !_thrower.IsAiming)
+        if (!_thrower.IsAiming && _jumpCount != 1)
         {
-            _isJumping = true;
-            _lastOnGroundTime = 0;
             float force = _jumpForce;
             if (_rb.velocity.y < 0) force -= _rb.velocity.y;
 
             _rb.AddForce(Vector3.up * force, ForceMode.Impulse);
 
             Destroy(Instantiate(_jumpPoof, transform.position + (-Vector3.up * 0.5f), Quaternion.identity), 5);
+            _jumpCount++;
         }
     }
 
@@ -126,13 +125,13 @@ public class PlayerController : MonoBehaviour
     {
         if (Physics.OverlapBox(_groundCheckPoint.position, _groundCheckSize, Quaternion.identity, _groundLayer).Length > 0)
         {
-            _lastOnGroundTime = _coyoteTime;
+            _coyoteTimer = _coyoteTime;
             IsStunned = false;
+            _jumpCount = 0;
         }
-
-        if (_isJumping && _rb.velocity.y < 0)
+        else
         {
-            _isJumping = false;
+            _coyoteTimer -= Time.deltaTime;
         }
     }
 
