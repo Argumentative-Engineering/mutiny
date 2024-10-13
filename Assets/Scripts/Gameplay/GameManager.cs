@@ -45,6 +45,7 @@ public class GameManager : MonoBehaviour
 
     private void OnPlayerJoined(PlayerInput input)
     {
+        if (Players.Count == 0) MusicManager.Instance.PlayMusic();
         Players.Add(input.gameObject);
         AlivePlayers.Add(input.gameObject);
         if (_playerSpawnPoints.Count == 0) return;
