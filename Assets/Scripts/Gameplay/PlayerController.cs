@@ -125,7 +125,7 @@ public class PlayerController : MonoBehaviour
             _jumpCount++;
 
             Destroy(Instantiate(_jumpPoof, transform.position, Quaternion.identity), 5);
-            _audio.PlayOneShot(_jumpSFX, 1f);
+            _audio.PlayOneShot(_jumpSFX, 2f);
         }
     }
 
