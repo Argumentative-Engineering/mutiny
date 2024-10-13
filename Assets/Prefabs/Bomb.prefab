@@ -149,3 +149,4 @@ MonoBehaviour:
   _timeTillExplode: 5
   _explosionForce: 50
   _explosionRadius: 5
+  _stunDuration: 3

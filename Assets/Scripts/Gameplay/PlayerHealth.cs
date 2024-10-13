@@ -5,12 +5,28 @@ using UnityEngine;
 
 public class PlayerHealth : MonoBehaviour
 {
-    [SerializeField] float _startingHealth = 100;
     public float Health { get; set; } = 100;
 
+    [Header("Settings")]
+    [SerializeField] float _startingHealth = 100;
+
+    [Header("References")]
+    [SerializeField] PlayerController _controls;
     private void Start()
     {
         Health = _startingHealth;
+    }
+
+    public void Stun(float duration)
+    {
+        StartCoroutine(DoStun(duration));
+    }
+
+    IEnumerator DoStun(float duration)
+    {
+        _controls.IsStunned = true;
+        yield return new WaitForSeconds(duration);
+        _controls.IsStunned = false;
     }
 
     public void Damage(float damage, Vector3 direction)

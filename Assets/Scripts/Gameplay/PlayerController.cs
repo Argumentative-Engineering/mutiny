@@ -26,6 +26,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] PlayerBombThrow _thrower;
     [SerializeField] PlayerInput _inputs;
 
+    public bool IsStunned { get; set; } = false;
+
     bool _isMouse;
 
     InputActionMap _playerInput;
@@ -95,6 +97,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnMovePerformed(InputAction.CallbackContext context)
     {
+        if (IsStunned) return;
         _inputVec = context.ReadValue<Vector2>();
         if (_inputVec.y > 0.7f) Jump();
     }
@@ -121,6 +124,7 @@ public class PlayerController : MonoBehaviour
         if (Physics.OverlapBox(_groundCheckPoint.position, _groundCheckSize, Quaternion.identity, _groundLayer).Length > 0)
         {
             _lastOnGroundTime = _coyoteTime;
+            IsStunned = false;
         }
 
         if (_isJumping && _rb.velocity.y < 0)

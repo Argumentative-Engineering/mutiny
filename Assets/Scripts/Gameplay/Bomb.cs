@@ -7,6 +7,8 @@ public class Bomb : MonoBehaviour
     [SerializeField] float _timeTillExplode;
     [SerializeField] float _explosionForce;
     [SerializeField] float _explosionRadius;
+    [SerializeField] float _stunDuration = 1;
+
     float _timer;
 
 
@@ -36,6 +38,7 @@ public class Bomb : MonoBehaviour
                     float dmg = Mathf.Max(_explosionForce / (1 + dist), 0);
 
                     health.Damage(dmg, dir);
+                    health.Stun(_stunDuration);
                 }
             }
             Destroy(gameObject);

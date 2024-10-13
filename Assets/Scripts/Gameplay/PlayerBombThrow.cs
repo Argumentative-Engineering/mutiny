@@ -53,7 +53,7 @@ public class PlayerBombThrow : MonoBehaviour
         Vector3 dir = IsMouse ? GetMousePosition() - transform.position : InputVector;
         dir.z = 0;
 
-        if (dir.magnitude > 0.2f)
+        if (dir.magnitude > (IsMouse ? 0 : 0.2f))
         {
             _aimVector = dir.normalized;
             float rot = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
