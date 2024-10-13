@@ -13,6 +13,7 @@ public class PlayerHealthUI : MonoBehaviour
     [SerializeField] Image _bgUI;
     [SerializeField] TextMeshProUGUI _healthUIText;
     [SerializeField] TextMeshProUGUI _colorUIText;
+    [SerializeField] GameObject _stunnedStatusUI, _deadStatusUI;
 
     bool _isShaking = false;
     Tween _shakeTween;
@@ -28,6 +29,9 @@ public class PlayerHealthUI : MonoBehaviour
     {
         _healthUIText.text = PlayerHealth.Health.ToString("N1");
         _healthUIText.color = Color.Lerp(Color.red, Color.white, PlayerHealth.Health / 100);
+
+        _stunnedStatusUI.SetActive(PlayerHealth.IsStunned);
+        _deadStatusUI.SetActive(PlayerHealth.Health <= 0);
 
         if (PlayerHealth.Health <= 20 && PlayerHealth.Health > 0 & !_isShaking)
         {

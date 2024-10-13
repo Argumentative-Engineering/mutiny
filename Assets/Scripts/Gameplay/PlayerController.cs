@@ -26,11 +26,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField] Transform _groundCheckPoint;
     [SerializeField] PlayerBombThrow _thrower;
     [SerializeField] PlayerInput _inputs;
+    [SerializeField] PlayerHealth _health;
     [SerializeField] GameObject _jumpPoof;
     [SerializeField] AudioSource _audio;
     [SerializeField] AudioClip _jumpSFX, _throwSFX;
-
-    public bool IsStunned { get; set; } = false;
 
     bool _isMouse;
 
@@ -84,7 +83,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnFirePerformed(InputAction.CallbackContext context)
     {
-        if (_thrower.StartAiming())
+        if (_thrower.StartAiming() && !_health.IsStunned)
         {
             _rb.useGravity = false;
             _prevVel = _rb.velocity;
@@ -94,7 +93,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnFireCancelled(InputAction.CallbackContext context)
     {
-        if (_thrower.EndAiming())
+        if (_thrower.EndAiming() && !_health.IsStunned)
         {
             _audio.PlayOneShot(_throwSFX, 3);
             _rb.useGravity = true;
@@ -104,7 +103,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnMovePerformed(InputAction.CallbackContext context)
     {
-        if (IsStunned) return;
+        if (_health.IsStunned) return;
         _inputVec = context.ReadValue<Vector2>();
         if (_isMouse && _inputVec.y > 0) Jump();
 
@@ -135,7 +134,7 @@ public class PlayerController : MonoBehaviour
         if (Physics.OverlapBox(_groundCheckPoint.position, _groundCheckSize, Quaternion.identity, _groundLayer).Length > 0)
         {
             _coyoteTimer = _coyoteTime;
-            IsStunned = false;
+            _health.IsStunned = false;
             _jumpCount = 0;
         }
         else

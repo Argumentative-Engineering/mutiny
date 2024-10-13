@@ -10,8 +10,7 @@ public class PlayerHealth : MonoBehaviour
     [Header("Settings")]
     [SerializeField] float _startingHealth = 100;
 
-    [Header("References")]
-    [SerializeField] PlayerController _controls;
+    public bool IsStunned { get; set; }
 
     private void Start()
     {
@@ -25,17 +24,15 @@ public class PlayerHealth : MonoBehaviour
 
     IEnumerator DoStun(float duration)
     {
-        _controls.IsStunned = true;
+        IsStunned = true;
         yield return new WaitForSeconds(duration);
-        _controls.IsStunned = false;
+        IsStunned = false;
     }
 
     public void Damage(float damage, Vector3 direction)
     {
         Health -= damage;
         Health = Mathf.Max(Health, 0);
-
-        print($"Remaining health for {transform.name}: {(int)Health}");
 
         if (Health <= 0)
             Die(direction);
@@ -47,12 +44,14 @@ public class PlayerHealth : MonoBehaviour
         rb.constraints = RigidbodyConstraints.None;
         rb.AddForce((dir + -Vector3.forward) * 100, ForceMode.Impulse);
         StartCoroutine(nameof(RemoveFromCam));
+
+        GetComponent<PlayerController>().enabled = false;
     }
 
     IEnumerator RemoveFromCam()
     {
         yield return new WaitForSeconds(1);
-        GameManager.Instance.AlivePlayers.Remove(gameObject);
+        GameManager.Instance.PlayerDied(gameObject);
     }
 
     private void OnDrawGizmos()

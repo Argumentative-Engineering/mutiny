@@ -12,6 +12,8 @@ public class GameManager : MonoBehaviour
     public List<GameObject> Players { get; private set; }
     public List<GameObject> AlivePlayers { get; set; } = new();
 
+    public readonly Stack<GameObject> WinnerStack = new();
+
     [SerializeField] List<Transform> _playerSpawnPoints;
     int _nextSpawn;
 
@@ -19,6 +21,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] PlayerInputManager _inputManager;
     [SerializeField] GameObject _healthBarsUIGroup;
     [SerializeField] GameObject _healthBarPrefab;
+    [SerializeField] GameOverUI _gameOverUIController;
 
     public static GameManager Instance { get; private set; }
     private void Awake()
@@ -61,5 +64,26 @@ public class GameManager : MonoBehaviour
         health.Player = input.GetComponent<PlayerInfo>();
         health.PlayerHealth = input.GetComponent<PlayerHealth>();
         health.UpdateText();
+    }
+
+    public void PlayerDied(GameObject player)
+    {
+        WinnerStack.Push(player);
+        AlivePlayers.Remove(player);
+
+        if (AlivePlayers.Count <= 1) GameOver();
+    }
+
+    public void GameOver()
+    {
+        foreach (var player in Players)
+        {
+            player.GetComponent<PlayerController>().enabled = false;
+        }
+        foreach (var alive in AlivePlayers)
+        {
+            WinnerStack.Push(alive);
+        }
+        _gameOverUIController.GameOver();
     }
 }

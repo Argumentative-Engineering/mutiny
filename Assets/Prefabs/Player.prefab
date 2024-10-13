@@ -561,6 +561,7 @@ MonoBehaviour:
   _groundCheckPoint: {fileID: 552601228193971055}
   _thrower: {fileID: 4823381824983396506}
   _inputs: {fileID: 262309061822986627}
+  _health: {fileID: -7513044568494896947}
   _jumpPoof: {fileID: 1917090188973898087, guid: b6c1f11f6e2e9da4296f17e5933dbe1d,
     type: 3}
   _audio: {fileID: 5299870590486838849}
@@ -598,7 +599,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _startingHealth: 100
-  _controls: {fileID: 2733175448236122755}
 --- !u!82 &5299870590486838849
 AudioSource:
   m_ObjectHideFlags: 0
