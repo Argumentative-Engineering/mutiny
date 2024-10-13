@@ -32,6 +32,7 @@ public class Bomb : MonoBehaviour
                 {
                     var dist = Vector3.Distance(col.transform.position, transform.position);
                     var dir = col.transform.position - transform.position;
+
                     float dmg = Mathf.Max(_explosionForce / (1 + dist), 0);
 
                     health.Damage(dmg, dir);

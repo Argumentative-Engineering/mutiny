@@ -5,7 +5,13 @@ using UnityEngine;
 
 public class PlayerHealth : MonoBehaviour
 {
-    public float Health { get; set; }
+    [SerializeField] float _startingHealth = 100;
+    public float Health { get; set; } = 100;
+
+    private void Start()
+    {
+        Health = _startingHealth;
+    }
 
     public void Damage(float damage, Vector3 direction)
     {
