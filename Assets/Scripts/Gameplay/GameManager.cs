@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
 {
     [field: SerializeField]
     public List<GameObject> Players { get; private set; }
+    public List<GameObject> AlivePlayers { get; set; } = new();
 
     [SerializeField]
     List<Transform> _playerSpawnPoints;
@@ -41,6 +42,7 @@ public class GameManager : MonoBehaviour
     private void OnPlayerJoined(PlayerInput input)
     {
         Players.Add(input.gameObject);
+        AlivePlayers.Add(input.gameObject);
         if (_playerSpawnPoints.Count == 0) return;
 
         var spawn = _playerSpawnPoints[UnityEngine.Random.Range(0, _playerSpawnPoints.Count)];

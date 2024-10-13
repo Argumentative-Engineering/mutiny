@@ -1,4 +1,6 @@
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.Playables;
 
 public class Bomb : MonoBehaviour
 {
@@ -24,6 +26,15 @@ public class Bomb : MonoBehaviour
                 if (col.TryGetComponent(out Rigidbody rb))
                 {
                     rb.AddExplosionForce(_explosionForce, transform.position, _explosionRadius, 1, ForceMode.Impulse);
+                }
+
+                if (col.TryGetComponent(out PlayerHealth health))
+                {
+                    var dist = Vector3.Distance(col.transform.position, transform.position);
+                    var dir = col.transform.position - transform.position;
+                    float dmg = Mathf.Max(_explosionForce / (1 + dist), 0);
+
+                    health.Damage(dmg, dir);
                 }
             }
             Destroy(gameObject);

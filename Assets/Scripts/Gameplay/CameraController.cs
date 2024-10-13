@@ -4,30 +4,29 @@ public class CameraController : MonoBehaviour
 {
     [SerializeField] float _followSpeed = 10;
     [SerializeField] Vector2 _zoomLimits;
+    [SerializeField] Vector3 _offset;
 
     float _boundsSize;
     GameManager _game;
-    Vector3 _offset;
 
     void Start()
     {
         _game = GameManager.Instance;
-        _offset = transform.position;
     }
 
     private void LateUpdate()
     {
-        if (_game.Players.Count == 0) return;
+        if (_game.AlivePlayers.Count == 0) return;
 
         var center = GetBoundsCenter();
         center.z = -Mathf.Lerp(_zoomLimits.x, _zoomLimits.y, _boundsSize / _zoomLimits.y);
-        var pos = Vector3.Lerp(transform.position, center, _followSpeed * Time.deltaTime);
+        var pos = Vector3.Lerp(transform.position, center + _offset, _followSpeed * Time.deltaTime);
         transform.position = pos;
     }
 
     Vector3 GetBoundsCenter()
     {
-        var targets = _game.Players;
+        var targets = _game.AlivePlayers;
         if (targets.Count == 1) return targets[0].transform.position;
 
         Bounds bounds = new(targets[0].transform.position, Vector3.zero);

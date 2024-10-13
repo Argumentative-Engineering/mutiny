@@ -47,6 +47,7 @@ GameObject:
   - component: {fileID: 262309061822986627}
   - component: {fileID: 2733175448236122755}
   - component: {fileID: 4823381824983396506}
+  - component: {fileID: -7513044568494896947}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -241,11 +242,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _bombThrowForce: 1000
+  _cooldown: 1
   _arrow: {fileID: 2969340022831675833}
   _bombThrowPoint: {fileID: 6213753979189309605}
   _bombPrefab: {fileID: 7918166975738274489, guid: b6f4d5fbc79db804fa7de1e8adb63986,
     type: 3}
   _rb: {fileID: 6133754416016351551}
+--- !u!114 &-7513044568494896947
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8258135699159191644}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6453f4fc4661c144abaecf5c61c6ff26, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8797350190602640263
 GameObject:
   m_ObjectHideFlags: 0
