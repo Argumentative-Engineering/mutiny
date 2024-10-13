@@ -6,6 +6,8 @@ using UnityEngine.InputSystem;
 
 public class GameManager : MonoBehaviour
 {
+    [Header("Settings")]
+    [SerializeField] List<Color> _playerColors = new();
     [field: SerializeField]
     public List<GameObject> Players { get; private set; }
     public List<GameObject> AlivePlayers { get; set; } = new();
@@ -15,6 +17,8 @@ public class GameManager : MonoBehaviour
 
     [Header("References")]
     [SerializeField] PlayerInputManager _inputManager;
+    [SerializeField] GameObject _healthBarsUIGroup;
+    [SerializeField] GameObject _healthBarPrefab;
 
     public static GameManager Instance { get; private set; }
     private void Awake()
@@ -47,5 +51,14 @@ public class GameManager : MonoBehaviour
 
         var spawn = _playerSpawnPoints[UnityEngine.Random.Range(0, _playerSpawnPoints.Count)];
         input.GetComponent<Rigidbody>().position = spawn.position;
+
+        var number = Players.Count - 1;
+        input.transform.name = $"Player {number + 1}";
+        input.GetComponent<PlayerInfo>().SetColor(number, _playerColors[number]);
+
+        var health = Instantiate(_healthBarPrefab, _healthBarsUIGroup.transform).GetComponent<PlayerHealthUI>();
+        health.Player = input.GetComponent<PlayerInfo>();
+        health.PlayerHealth = input.GetComponent<PlayerHealth>();
+        health.UpdateText();
     }
 }

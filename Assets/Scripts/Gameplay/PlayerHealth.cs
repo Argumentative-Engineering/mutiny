@@ -3,6 +3,14 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
+public enum PlayerColor
+{
+    Red,
+    Blue,
+    Yellow,
+    Green
+}
+
 public class PlayerHealth : MonoBehaviour
 {
     public float Health { get; set; } = 100;
@@ -12,6 +20,7 @@ public class PlayerHealth : MonoBehaviour
 
     [Header("References")]
     [SerializeField] PlayerController _controls;
+
     private void Start()
     {
         Health = _startingHealth;
