@@ -29,10 +29,10 @@ public class PlayerHealthUI : MonoBehaviour
         _healthUIText.text = PlayerHealth.Health.ToString("N1");
         _healthUIText.color = Color.Lerp(Color.red, Color.white, PlayerHealth.Health / 100);
 
-        if (PlayerHealth.Health <= 20 & !_isShaking)
+        if (PlayerHealth.Health <= 20 && PlayerHealth.Health > 0 & !_isShaking)
         {
             _isShaking = true;
-            _shakeTween = _healthUIText.transform.DOShakePosition(1, 10, 10).SetLoops(-1, LoopType.Restart);
+            _shakeTween = _healthUIText.transform.DOScale(Vector3.one * 1.2f, 0.5f).SetEase(Ease.OutBounce).SetLoops(-1, LoopType.Yoyo);
         }
         else
         {
