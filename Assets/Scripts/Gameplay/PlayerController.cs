@@ -26,6 +26,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] PlayerBombThrow _thrower;
     [SerializeField] PlayerInput _inputs;
     [SerializeField] GameObject _jumpPoof;
+    [SerializeField] AudioSource _audio;
+    [SerializeField] AudioClip _jumpSFX, _throwSFX;
 
     public bool IsStunned { get; set; } = false;
 
@@ -94,6 +96,7 @@ public class PlayerController : MonoBehaviour
 
         _rb.useGravity = true;
         _rb.velocity = _prevVel;
+        _audio.PlayOneShot(_throwSFX, 3);
     }
 
     private void OnMovePerformed(InputAction.CallbackContext context)
@@ -115,9 +118,10 @@ public class PlayerController : MonoBehaviour
             if (_rb.velocity.y < 0) force -= _rb.velocity.y;
 
             _rb.AddForce(Vector3.up * force, ForceMode.Impulse);
+            _jumpCount++;
 
             Destroy(Instantiate(_jumpPoof, transform.position + (-Vector3.up * 0.5f), Quaternion.identity), 5);
-            _jumpCount++;
+            _audio.PlayOneShot(_jumpSFX, 1f);
         }
     }
 
