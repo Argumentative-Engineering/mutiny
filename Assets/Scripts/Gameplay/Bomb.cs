@@ -1,6 +1,8 @@
-using UnityEditor.Experimental.GraphView;
+using System.Collections;
+using System.Threading;
+using DG.Tweening;
+using TMPro;
 using UnityEngine;
-using UnityEngine.Playables;
 
 public class Bomb : MonoBehaviour
 {
@@ -13,9 +15,10 @@ public class Bomb : MonoBehaviour
 
     [Header("Refernces")]
     [SerializeField] GameObject _bombExplodeVFX;
+    [SerializeField] TextMeshPro _timerText;
+    [SerializeField] Renderer _graphic;
 
     float _timer;
-
 
     void Start()
     {
@@ -53,6 +56,8 @@ public class Bomb : MonoBehaviour
         {
             _timer -= Time.deltaTime;
         }
+
+        _timerText.text = ((int)_timer).ToString();
     }
 
     private void OnDrawGizmos()
