@@ -359,6 +359,7 @@ GameObject:
   - component: {fileID: 262309061822986627}
   - component: {fileID: -2979429401431470707}
   - component: {fileID: 2733175448236122755}
+  - component: {fileID: 6290204773558064659}
   - component: {fileID: 4823381824983396506}
   - component: {fileID: -7513044568494896947}
   - component: {fileID: 5299870590486838849}
@@ -567,6 +568,22 @@ MonoBehaviour:
   _audio: {fileID: 5299870590486838849}
   _jumpSFX: {fileID: 8300000, guid: 9c90462609452274ab9c7bde69c22a3f, type: 3}
   _throwSFX: {fileID: 8300000, guid: aee59d0955bf24c4998f8988a6d7e021, type: 3}
+--- !u!114 &6290204773558064659
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8258135699159191644}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00171e618ba1be14b90a1bc97012291e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _rb: {fileID: 6133754416016351551}
+  _thrower: {fileID: 4823381824983396506}
+  _renderer: {fileID: 8212486754224096575}
+  _anim: {fileID: 7470746204288742435}
 --- !u!114 &4823381824983396506
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -705,7 +722,7 @@ Animator:
   m_GameObject: {fileID: 8258135699159191644}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 3b2d3c3c3817d9a44942a5cc983ffb53, type: 2}
+  m_Controller: {fileID: 9100000, guid: 6ac3d850ad19e476fbc70d01568c77bc, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

@@ -4,15 +4,21 @@ using UnityEngine;
 
 public class PlayerAnimation : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] Rigidbody _rb;
+    [SerializeField] PlayerBombThrow _thrower;
+    [SerializeField] SpriteRenderer _renderer;
+    [SerializeField] Animator _anim;
 
-    // Update is called once per frame
     void Update()
     {
-        
+        _anim.SetFloat("Horizontal", Mathf.Abs(_rb.velocity.x));
+        _anim.SetBool("IsJumping", Mathf.Abs(_rb.velocity.normalized.y) > 0.1f);
+        _anim.SetBool("IsAiming", _thrower.IsAiming);
+
+        var vec = _thrower.IsAiming ? _thrower.AimVector : _rb.velocity;
+        if (vec.magnitude > 0.5f)
+        {
+            _renderer.flipX = vec.x < -0.2f;
+        }
     }
 }

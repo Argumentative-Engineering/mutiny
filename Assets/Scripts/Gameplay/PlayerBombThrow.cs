@@ -5,6 +5,7 @@ public class PlayerBombThrow : MonoBehaviour
 {
     public bool IsAiming { get; set; }
     public Vector3 InputVector { get; set; }
+    public Vector3 AimVector { get; private set; }
     public bool IsMouse { get; set; }
 
     public float CooldownLeft { get; set; }
@@ -19,7 +20,6 @@ public class PlayerBombThrow : MonoBehaviour
     [SerializeField] GameObject _bombPrefab;
     [SerializeField] Rigidbody _rb;
 
-    Vector3 _aimVector;
 
     void Start()
     {
@@ -51,8 +51,8 @@ public class PlayerBombThrow : MonoBehaviour
                 var bomb = Instantiate(_bombPrefab, _bombThrowPoint.position, Quaternion.identity).GetComponent<Rigidbody>();
                 bomb.GetComponent<Bomb>().Owner = gameObject;
 
-                bomb.AddForce(_aimVector * _bombThrowForce, ForceMode.Force);
-                _rb.AddForce(-_aimVector * (_bombThrowForce * 0.01f), ForceMode.Impulse);
+                bomb.AddForce(AimVector * _bombThrowForce, ForceMode.Force);
+                _rb.AddForce(-AimVector * (_bombThrowForce * 0.01f), ForceMode.Impulse);
 
                 CooldownLeft = _cooldown;
                 return true;
@@ -68,7 +68,7 @@ public class PlayerBombThrow : MonoBehaviour
 
         if (dir.magnitude > (IsMouse ? 0 : 0.2f))
         {
-            _aimVector = dir.normalized;
+            AimVector = dir.normalized;
             float rot = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
             _arrow.transform.rotation = Quaternion.Euler(0, 0, rot);
         }
