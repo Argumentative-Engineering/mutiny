@@ -84,7 +84,8 @@ public class PlayerController : MonoBehaviour
 
     private void OnFirePerformed(InputAction.CallbackContext context)
     {
-        if(_thrower.StartAiming()){
+        if (_thrower.StartAiming())
+        {
             _rb.useGravity = false;
             _prevVel = _rb.velocity;
             _rb.velocity = Vector3.zero;
@@ -93,7 +94,8 @@ public class PlayerController : MonoBehaviour
 
     private void OnFireCancelled(InputAction.CallbackContext context)
     {
-        if(_thrower.EndAiming()){
+        if (_thrower.EndAiming())
+        {
             _audio.PlayOneShot(_throwSFX, 3);
             _rb.useGravity = true;
             _rb.velocity = _prevVel;
@@ -104,7 +106,9 @@ public class PlayerController : MonoBehaviour
     {
         if (IsStunned) return;
         _inputVec = context.ReadValue<Vector2>();
-        // if (_inputVec.y > 0.7f) Jump();
+        if (_isMouse && _inputVec.y > 0) Jump();
+
+        _inputVec.y = 0;
     }
 
     private void OnMoveCancelled(InputAction.CallbackContext ctx) => _inputVec = Vector2.zero;
@@ -121,7 +125,7 @@ public class PlayerController : MonoBehaviour
             _rb.AddForce(Vector3.up * force, ForceMode.Impulse);
             _jumpCount++;
 
-            Destroy(Instantiate(_jumpPoof, transform.position + (-Vector3.up * 0.5f), Quaternion.identity), 5);
+            Destroy(Instantiate(_jumpPoof, transform.position, Quaternion.identity), 5);
             _audio.PlayOneShot(_jumpSFX, 1f);
         }
     }
@@ -152,9 +156,9 @@ public class PlayerController : MonoBehaviour
 
         _rb.AddForce(movement * Vector3.right);
 
-        if(_rb.velocity.magnitude >= _velocityLimit)
+        if (_rb.velocity.magnitude >= _velocityLimit)
         {
-            _rb.velocity *= _velocityLimit/_rb.velocity.magnitude;
+            _rb.velocity *= _velocityLimit / _rb.velocity.magnitude;
         }
 
         if (Mathf.Abs(_inputVec.x) < 0.01f)

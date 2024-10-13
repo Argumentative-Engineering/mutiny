@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public class PlayerBombThrow : MonoBehaviour
@@ -29,7 +28,8 @@ public class PlayerBombThrow : MonoBehaviour
 
     public bool StartAiming()
     {
-        if (CooldownLeft <= 0){
+        if (CooldownLeft <= 0)
+        {
             IsAiming = true;
             _arrow.SetActive(true);
             return true;
@@ -40,20 +40,22 @@ public class PlayerBombThrow : MonoBehaviour
 
     public bool EndAiming()
     {
-        if(IsAiming){
-            {
-                IsAiming = false;
-                _arrow.SetActive(false);
+        if (IsAiming)
+        {
+            IsAiming = false;
+            _arrow.SetActive(false);
 
-                if (CooldownLeft <= 0)
-                {
-                    // throw bomb and push me back
-                    var bomb = Instantiate(_bombPrefab, _bombThrowPoint.position, Quaternion.identity).GetComponent<Rigidbody>();
-                    bomb.AddForce(_aimVector * _bombThrowForce, ForceMode.Force);
-                    _rb.AddForce(-_aimVector * (_bombThrowForce * 0.01f), ForceMode.Impulse);
-                    CooldownLeft = _cooldown;
-                    return true;
-                }
+            if (CooldownLeft <= 0)
+            {
+                // throw bomb and push me back
+                var bomb = Instantiate(_bombPrefab, _bombThrowPoint.position, Quaternion.identity).GetComponent<Rigidbody>();
+                bomb.GetComponent<Bomb>().Owner = gameObject;
+
+                bomb.AddForce(_aimVector * _bombThrowForce, ForceMode.Force);
+                _rb.AddForce(-_aimVector * (_bombThrowForce * 0.01f), ForceMode.Impulse);
+
+                CooldownLeft = _cooldown;
+                return true;
             }
         }
         return false;
@@ -61,7 +63,7 @@ public class PlayerBombThrow : MonoBehaviour
 
     void Update()
     {
-        Vector3 dir = IsMouse ? GetMousePosition() - transform.position : InputVector;
+        Vector3 dir = IsMouse ? GetMouseVector() : InputVector;
         dir.z = 0;
 
         if (dir.magnitude > (IsMouse ? 0 : 0.2f))
@@ -75,10 +77,16 @@ public class PlayerBombThrow : MonoBehaviour
             CooldownLeft -= Time.deltaTime;
     }
 
-    Vector3 GetMousePosition()
+    Vector3 GetMouseVector()
     {
-        var mousePos = InputVector;
-        mousePos.z = Camera.main.nearClipPlane;
-        return Camera.main.ScreenToWorldPoint(mousePos);
+        var mousePos = Input.mousePosition;
+        mousePos.z = transform.position.z - Camera.main.transform.position.z;
+
+        var worldPos = Camera.main.ScreenToWorldPoint(mousePos);
+        worldPos.z = 0;
+
+        var vec = worldPos - transform.position;
+        vec.z = 0;
+        return vec;
     }
 }
