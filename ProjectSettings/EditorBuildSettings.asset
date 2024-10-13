@@ -5,9 +5,12 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/SCN_Game.unity
     guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 1
+    path: Assets/Scenes/Sandbox/SCN_Aaron.unity
+    guid: 47f88d5a47a37d743aa687a03a2c391a
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: b9f63c1c08115c143a4fa48367b51b2d,
       type: 2}
