@@ -12,8 +12,8 @@ public class GameManager : MonoBehaviour
     public List<GameObject> Players { get; private set; }
     public List<GameObject> AlivePlayers { get; set; } = new();
 
-    [SerializeField]
-    List<Transform> _playerSpawnPoints;
+    [SerializeField] List<Transform> _playerSpawnPoints;
+    int _nextSpawn;
 
     [Header("References")]
     [SerializeField] PlayerInputManager _inputManager;
@@ -50,7 +50,8 @@ public class GameManager : MonoBehaviour
         AlivePlayers.Add(input.gameObject);
         if (_playerSpawnPoints.Count == 0) return;
 
-        var spawn = _playerSpawnPoints[UnityEngine.Random.Range(0, _playerSpawnPoints.Count)];
+        var spawn = _playerSpawnPoints[_nextSpawn];
+        _nextSpawn = (_nextSpawn + 1) % _playerSpawnPoints.Count;
         input.GetComponent<Rigidbody>().position = spawn.position;
 
         var number = Players.Count - 1;
