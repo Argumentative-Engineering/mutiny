@@ -19,8 +19,14 @@ public class Bomb : MonoBehaviour
     {
         if (_timer <= 0)
         {
-            print("Explode");
-            _rb.AddExplosionForce(_explosionForce, transform.position, _explosionRadius);
+            var cols = Physics.OverlapSphere(transform.position, _explosionRadius);
+            foreach (var col in cols)
+            {
+                if (col.TryGetComponent(out Rigidbody rb))
+                {
+                    rb.AddExplosionForce(_explosionForce, transform.position, _explosionRadius, 1, ForceMode.Impulse);
+                }
+            }
             Destroy(gameObject);
         }
         else

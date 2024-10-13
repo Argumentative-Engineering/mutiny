@@ -43,8 +43,7 @@ public class PlayerBombThrow : MonoBehaviour
 
     void Update()
     {
-        var inputVec = IsMouse ? GetMousePosition() : InputVector;
-        Vector3 dir = inputVec - transform.position;
+        Vector3 dir = IsMouse ? GetMousePosition() - transform.position : InputVector;
         dir.z = 0;
 
         _aimVector = dir.normalized;

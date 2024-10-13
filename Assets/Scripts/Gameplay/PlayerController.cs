@@ -26,6 +26,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] PlayerBombThrow _thrower;
     [SerializeField] PlayerInput _inputs;
 
+    bool _isMouse;
+
     InputActionMap _playerInput;
     Vector2 _inputVec;
     Rigidbody _rb;
@@ -37,7 +39,8 @@ public class PlayerController : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody>();
         _playerInput = _inputs.actions.FindActionMap("Player");
-        _thrower.IsMouse = _inputs.currentControlScheme == "Keyboard&Mouse";
+        _isMouse = _inputs.currentControlScheme == "Keyboard&Mouse";
+        _thrower.IsMouse = _isMouse;
 
         _playerInput.FindAction("Move").performed += OnMovePerformed;
         _playerInput.FindAction("Move").canceled += OnMoveCancelled;
@@ -93,7 +96,7 @@ public class PlayerController : MonoBehaviour
     private void OnMovePerformed(InputAction.CallbackContext context)
     {
         _inputVec = context.ReadValue<Vector2>();
-        if (_inputVec.y > 0) Jump();
+        if (_inputVec.y > 0.7f) Jump();
     }
 
     private void OnMoveCancelled(InputAction.CallbackContext ctx) => _inputVec = Vector2.zero;
