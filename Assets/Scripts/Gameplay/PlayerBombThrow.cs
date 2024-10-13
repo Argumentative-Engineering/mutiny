@@ -27,25 +27,36 @@ public class PlayerBombThrow : MonoBehaviour
         _arrow.SetActive(false);
     }
 
-    public void StartAiming()
+    public bool StartAiming()
     {
-        IsAiming = true;
-        _arrow.SetActive(true);
+        if (CooldownLeft <= 0){
+            IsAiming = true;
+            _arrow.SetActive(true);
+            return true;
+        }
+
+        return false;
     }
 
-    public void EndAiming()
+    public bool EndAiming()
     {
-        IsAiming = false;
-        _arrow.SetActive(false);
+        if(IsAiming){
+            {
+                IsAiming = false;
+                _arrow.SetActive(false);
 
-        if (CooldownLeft <= 0)
-        {
-            // throw bomb and push me back
-            var bomb = Instantiate(_bombPrefab, _bombThrowPoint.position, Quaternion.identity).GetComponent<Rigidbody>();
-            bomb.AddForce(_aimVector * _bombThrowForce, ForceMode.Force);
-            _rb.AddForce(-_aimVector * (_bombThrowForce * 0.01f), ForceMode.Impulse);
-            CooldownLeft = _cooldown;
+                if (CooldownLeft <= 0)
+                {
+                    // throw bomb and push me back
+                    var bomb = Instantiate(_bombPrefab, _bombThrowPoint.position, Quaternion.identity).GetComponent<Rigidbody>();
+                    bomb.AddForce(_aimVector * _bombThrowForce, ForceMode.Force);
+                    _rb.AddForce(-_aimVector * (_bombThrowForce * 0.01f), ForceMode.Impulse);
+                    CooldownLeft = _cooldown;
+                    return true;
+                }
+            }
         }
+        return false;
     }
 
     void Update()

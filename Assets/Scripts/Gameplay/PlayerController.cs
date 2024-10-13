@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float _frictionAmount = 0.2f;
     [SerializeField] float _coyoteTime = 0.5f;
     [SerializeField] float _jumpForce = 10f;
+    [SerializeField] float _velocityLimit = 1000f;
 
     [Header("Collision")]
     [SerializeField] Vector3 _groundCheckSize;
@@ -83,20 +84,20 @@ public class PlayerController : MonoBehaviour
 
     private void OnFirePerformed(InputAction.CallbackContext context)
     {
-        _thrower.StartAiming();
-
-        _rb.useGravity = false;
-        _prevVel = _rb.velocity;
-        _rb.velocity = Vector3.zero;
+        if(_thrower.StartAiming()){
+            _rb.useGravity = false;
+            _prevVel = _rb.velocity;
+            _rb.velocity = Vector3.zero;
+        }
     }
 
     private void OnFireCancelled(InputAction.CallbackContext context)
     {
-        _thrower.EndAiming();
-
-        _rb.useGravity = true;
-        _rb.velocity = _prevVel;
-        _audio.PlayOneShot(_throwSFX, 3);
+        if(_thrower.EndAiming()){
+            _audio.PlayOneShot(_throwSFX, 3);
+            _rb.useGravity = true;
+            _rb.velocity = _prevVel;
+        }
     }
 
     private void OnMovePerformed(InputAction.CallbackContext context)
@@ -150,6 +151,11 @@ public class PlayerController : MonoBehaviour
         var movement = speedDiff * accel;
 
         _rb.AddForce(movement * Vector3.right);
+
+        if(_rb.velocity.magnitude >= _velocityLimit)
+        {
+            _rb.velocity *= _velocityLimit/_rb.velocity.magnitude;
+        }
 
         if (Mathf.Abs(_inputVec.x) < 0.01f)
         {
