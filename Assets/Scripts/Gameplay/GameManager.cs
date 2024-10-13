@@ -84,6 +84,8 @@ public class GameManager : MonoBehaviour
         {
             WinnerStack.Push(alive);
         }
+
+        _gameOverUIController.gameObject.SetActive(true);
         _gameOverUIController.GameOver();
     }
 }
