@@ -25,6 +25,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] Transform _groundCheckPoint;
     [SerializeField] PlayerBombThrow _thrower;
     [SerializeField] PlayerInput _inputs;
+    [SerializeField] GameObject _jumpPoof;
 
     public bool IsStunned { get; set; } = false;
 
@@ -116,6 +117,8 @@ public class PlayerController : MonoBehaviour
             if (_rb.velocity.y < 0) force -= _rb.velocity.y;
 
             _rb.AddForce(Vector3.up * force, ForceMode.Impulse);
+
+            Destroy(Instantiate(_jumpPoof, transform.position + (-Vector3.up * 0.5f), Quaternion.identity), 5);
         }
     }
 

@@ -65,7 +65,7 @@ Transform:
   m_GameObject: {fileID: 8258135699159191644}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.5, z: 0}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -243,6 +243,8 @@ MonoBehaviour:
   _groundCheckPoint: {fileID: 552601228193971055}
   _thrower: {fileID: 4823381824983396506}
   _inputs: {fileID: 262309061822986627}
+  _jumpPoof: {fileID: 1917090188973898087, guid: b6c1f11f6e2e9da4296f17e5933dbe1d,
+    type: 3}
 --- !u!114 &4823381824983396506
 MonoBehaviour:
   m_ObjectHideFlags: 0
