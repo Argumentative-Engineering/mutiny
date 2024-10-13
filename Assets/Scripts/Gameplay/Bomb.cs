@@ -7,11 +7,9 @@ public class Bomb : MonoBehaviour
     [SerializeField] float _explosionRadius;
     float _timer;
 
-    Rigidbody _rb;
 
     void Start()
     {
-        _rb = GetComponent<Rigidbody>();
         _timer = _timeTillExplode;
     }
 
@@ -19,6 +17,7 @@ public class Bomb : MonoBehaviour
     {
         if (_timer <= 0)
         {
+            // non-alloc my ass fuck dat
             var cols = Physics.OverlapSphere(transform.position, _explosionRadius);
             foreach (var col in cols)
             {

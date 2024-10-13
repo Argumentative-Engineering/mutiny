@@ -147,5 +147,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _timeTillExplode: 5
-  _explosionForce: 100
+  _explosionForce: 50
   _explosionRadius: 5
