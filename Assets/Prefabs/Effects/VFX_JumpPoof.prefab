@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 701989685405794423}
   - component: {fileID: 3138276145369573594}
   m_Layer: 0
-  m_Name: JumpPoof
+  m_Name: VFX_JumpPoof
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -4,10 +4,15 @@ using UnityEngine.Playables;
 
 public class Bomb : MonoBehaviour
 {
+    [Header("Settings")]
     [SerializeField] float _timeTillExplode;
     [SerializeField] float _explosionForce;
+    [SerializeField] float _damageMult = 2;
     [SerializeField] float _explosionRadius;
     [SerializeField] float _stunDuration = 1;
+
+    [Header("Refernces")]
+    [SerializeField] GameObject _bombExplodeVFX;
 
     float _timer;
 
@@ -35,12 +40,13 @@ public class Bomb : MonoBehaviour
                     var dist = Vector3.Distance(col.transform.position, transform.position);
                     var dir = col.transform.position - transform.position;
 
-                    float dmg = Mathf.Max(_explosionForce / (1 + dist), 0);
+                    float dmg = Mathf.Max(_explosionForce * _damageMult / (1 + dist), 0);
 
                     health.Damage(dmg, dir);
                     health.Stun(_stunDuration);
                 }
             }
+            Destroy(Instantiate(_bombExplodeVFX, transform.position, Quaternion.identity), 3);
             Destroy(gameObject);
         }
         else
