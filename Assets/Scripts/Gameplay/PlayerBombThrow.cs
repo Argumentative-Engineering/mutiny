@@ -50,19 +50,18 @@ public class PlayerBombThrow : MonoBehaviour
 
     void Update()
     {
-        print(CooldownLeft);
         Vector3 dir = IsMouse ? GetMousePosition() - transform.position : InputVector;
         dir.z = 0;
 
-        _aimVector = dir.normalized;
-
-        float rot = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-        _arrow.transform.rotation = Quaternion.Euler(0, 0, rot);
+        if (dir.magnitude > 0.2f)
+        {
+            _aimVector = dir.normalized;
+            float rot = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+            _arrow.transform.rotation = Quaternion.Euler(0, 0, rot);
+        }
 
         if (CooldownLeft > 0)
-        {
             CooldownLeft -= Time.deltaTime;
-        }
     }
 
     Vector3 GetMousePosition()
