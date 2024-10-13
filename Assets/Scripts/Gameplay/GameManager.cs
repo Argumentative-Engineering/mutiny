@@ -9,6 +9,9 @@ public class GameManager : MonoBehaviour
     [field: SerializeField]
     public List<GameObject> Players { get; private set; }
 
+    [SerializeField]
+    List<Transform> _playerSpawnPoints;
+
     [Header("References")]
     [SerializeField] PlayerInputManager _inputManager;
 
@@ -16,7 +19,6 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-
     }
 
     void OnEnable()
@@ -39,5 +41,9 @@ public class GameManager : MonoBehaviour
     private void OnPlayerJoined(PlayerInput input)
     {
         Players.Add(input.gameObject);
+        if (_playerSpawnPoints.Count == 0) return;
+
+        var spawn = _playerSpawnPoints[UnityEngine.Random.Range(0, _playerSpawnPoints.Count)];
+        input.GetComponent<Rigidbody>().position = spawn.position;
     }
 }

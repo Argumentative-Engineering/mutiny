@@ -8,8 +8,11 @@ public class PlayerBombThrow : MonoBehaviour
     public Vector3 InputVector { get; set; }
     public bool IsMouse { get; set; }
 
+    public float CooldownLeft { get; set; }
+
     [Header("Settings")]
     [SerializeField] float _bombThrowForce = 10;
+    [SerializeField] float _cooldown = 1;
 
     [Header("References")]
     [SerializeField] GameObject _arrow;
@@ -35,14 +38,19 @@ public class PlayerBombThrow : MonoBehaviour
         IsAiming = false;
         _arrow.SetActive(false);
 
-        // throw bomb and push me back
-        var bomb = Instantiate(_bombPrefab, _bombThrowPoint.position, Quaternion.identity).GetComponent<Rigidbody>();
-        bomb.AddForce(_aimVector * _bombThrowForce, ForceMode.Force);
-        _rb.AddForce(-_aimVector * (_bombThrowForce * 0.01f), ForceMode.Impulse);
+        if (CooldownLeft <= 0)
+        {
+            // throw bomb and push me back
+            var bomb = Instantiate(_bombPrefab, _bombThrowPoint.position, Quaternion.identity).GetComponent<Rigidbody>();
+            bomb.AddForce(_aimVector * _bombThrowForce, ForceMode.Force);
+            _rb.AddForce(-_aimVector * (_bombThrowForce * 0.01f), ForceMode.Impulse);
+            CooldownLeft = _cooldown;
+        }
     }
 
     void Update()
     {
+        print(CooldownLeft);
         Vector3 dir = IsMouse ? GetMousePosition() - transform.position : InputVector;
         dir.z = 0;
 
@@ -50,6 +58,11 @@ public class PlayerBombThrow : MonoBehaviour
 
         float rot = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
         _arrow.transform.rotation = Quaternion.Euler(0, 0, rot);
+
+        if (CooldownLeft > 0)
+        {
+            CooldownLeft -= Time.deltaTime;
+        }
     }
 
     Vector3 GetMousePosition()
