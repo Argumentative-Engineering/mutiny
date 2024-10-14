@@ -9,16 +9,19 @@ public class PlayerBombThrow : MonoBehaviour
     public bool IsMouse { get; set; }
 
     public float CooldownLeft { get; set; }
+    public float AirTime { get; set; }
 
     [Header("Settings")]
     [SerializeField] float _bombThrowForce = 10;
     [SerializeField] float _cooldown = 1;
+    [SerializeField] float _airTime = 2;
 
     [Header("References")]
     [SerializeField] GameObject _arrow;
     [SerializeField] Transform _bombThrowPoint;
     [SerializeField] GameObject _bombPrefab;
     [SerializeField] Rigidbody _rb;
+    [SerializeField] PlayerController _playerController;
 
 
     void Start()
@@ -32,6 +35,7 @@ public class PlayerBombThrow : MonoBehaviour
         {
             IsAiming = true;
             _arrow.SetActive(true);
+            AirTime = _airTime;
             return true;
         }
 
@@ -75,6 +79,17 @@ public class PlayerBombThrow : MonoBehaviour
 
         if (CooldownLeft > 0)
             CooldownLeft -= Time.deltaTime;
+
+        if (IsAiming) {
+            if (AirTime > 0)
+            {
+                AirTime -= Time.deltaTime;
+            }
+            else
+            {
+                _playerController.EndHover();
+            }
+        }
     }
 
     Vector3 GetMouseVector()

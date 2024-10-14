@@ -93,6 +93,11 @@ public class PlayerController : MonoBehaviour
 
     private void OnFireCancelled(InputAction.CallbackContext context)
     {
+        EndHover();
+    }
+
+    public void EndHover()
+    {
         if (_thrower.EndAiming() && !_health.IsStunned)
         {
             _audio.PlayOneShot(_throwSFX, 3);

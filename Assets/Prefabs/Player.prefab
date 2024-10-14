@@ -598,11 +598,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _bombThrowForce: 1000
   _cooldown: 1
+  _airTime: 1
   _arrow: {fileID: 8922054464591804086}
   _bombThrowPoint: {fileID: 6213753979189309605}
   _bombPrefab: {fileID: 7918166975738274489, guid: b6f4d5fbc79db804fa7de1e8adb63986,
     type: 3}
   _rb: {fileID: 6133754416016351551}
+  _playerController: {fileID: 2733175448236122755}
 --- !u!114 &-7513044568494896947
 MonoBehaviour:
   m_ObjectHideFlags: 0

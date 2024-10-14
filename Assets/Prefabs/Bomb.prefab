@@ -5244,7 +5244,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _timeTillExplode: 5
   _explosionForce: 50
-  _damageMult: 2
+  _damageMult: 5
   _explosionRadius: 5
   _stunDuration: 3
   _bombExplodeVFX: {fileID: 4705760087498658837, guid: 1d7cb74ff08a51146baaea97bb7e49bd,
