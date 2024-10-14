@@ -549,7 +549,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _moveSpeed: 10
-  _accelRate: 7
+  _accelRate: 10
   _deccelRate: 5
   _frictionAmount: 0.1
   _coyoteTime: 0.2

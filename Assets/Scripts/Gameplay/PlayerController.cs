@@ -98,7 +98,7 @@ public class PlayerController : MonoBehaviour
 
     public void EndHover()
     {
-        if (_thrower.EndAiming() && !_health.IsStunned)
+        if (_thrower.EndAiming())
         {
             _audio.PlayOneShot(_throwSFX, 3);
             _rb.useGravity = true;
