@@ -551,7 +551,7 @@ MonoBehaviour:
   _moveSpeed: 10
   _accelRate: 7
   _deccelRate: 5
-  _frictionAmount: 0.2
+  _frictionAmount: 0.1
   _coyoteTime: 0.2
   _jumpForce: 13
   _velocityLimit: 1000
