@@ -11798,6 +11798,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1372475417184900179, guid: 7e2e13f8056304545ba16f05427decc2,
+        type: 3}
+      propertyPath: m_Spacing
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 1372475417184900179, guid: 7e2e13f8056304545ba16f05427decc2,
+        type: 3}
+      propertyPath: m_ChildAlignment
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1372475417184900179, guid: 7e2e13f8056304545ba16f05427decc2,
+        type: 3}
+      propertyPath: m_ChildScaleWidth
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1372475417184900179, guid: 7e2e13f8056304545ba16f05427decc2,
+        type: 3}
+      propertyPath: m_ChildForceExpandWidth
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1603174341435254702, guid: 7e2e13f8056304545ba16f05427decc2,
         type: 3}
       propertyPath: m_Name
