@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 #if UNITY_EDITOR
 using UnityEditor;
@@ -17,6 +16,14 @@ public class PlayerHealth : MonoBehaviour
     private void Start()
     {
         Health = _startingHealth;
+    }
+
+    private void Update()
+    {
+        if(transform.position.y < -10f)
+        {
+            Die(Random.insideUnitCircle.normalized);
+        }
     }
 
     public void Stun(float duration)
@@ -45,15 +52,9 @@ public class PlayerHealth : MonoBehaviour
         var rb = GetComponent<Rigidbody>();
         rb.constraints = RigidbodyConstraints.None;
         rb.AddForce((dir + -Vector3.forward) * 100, ForceMode.Impulse);
-        StartCoroutine(nameof(RemoveFromCam));
+        GameManager.Instance.PlayerDied(gameObject);
 
         GetComponent<PlayerController>().enabled = false;
-    }
-
-    IEnumerator RemoveFromCam()
-    {
-        yield return new WaitForSeconds(1);
-        GameManager.Instance.PlayerDied(gameObject);
     }
 
 #if UNITY_EDITOR

@@ -16,6 +16,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float _coyoteTime = 0.5f;
     [SerializeField] float _jumpForce = 10f;
     [SerializeField] float _velocityLimit = 1000f;
+    [SerializeField] float _gravityMultiplier = 0.2f;
 
     [Header("Collision")]
     [SerializeField] Vector3 _groundCheckSize;
@@ -85,9 +86,8 @@ public class PlayerController : MonoBehaviour
     {
         if (_thrower.StartAiming() && !_health.IsStunned)
         {
-            _rb.useGravity = false;
-            _prevVel = _rb.velocity;
-            _rb.velocity = Vector3.zero;
+            _prevVel = _rb.linearVelocity;
+            _rb.linearVelocity = Vector3.zero;
         }
     }
 
@@ -101,8 +101,7 @@ public class PlayerController : MonoBehaviour
         if (_thrower.EndAiming())
         {
             _audio.PlayOneShot(_throwSFX, 3);
-            _rb.useGravity = true;
-            _rb.velocity = _prevVel;
+            _rb.linearVelocity = _prevVel;
         }
     }
 
@@ -124,7 +123,7 @@ public class PlayerController : MonoBehaviour
         if (!_thrower.IsAiming && _jumpCount != 1)
         {
             float force = _jumpForce;
-            if (_rb.velocity.y < 0) force -= _rb.velocity.y;
+            if (_rb.linearVelocity.y < 0) force -= _rb.linearVelocity.y;
 
             _rb.AddForce(Vector3.up * force, ForceMode.Impulse);
             _jumpCount++;
@@ -150,25 +149,29 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (_thrower.IsAiming) return;
+        if (_thrower.IsAiming)
+        {
+            if (_rb.linearVelocity.y < 0) _rb.AddForce(Vector2.up * Physics.gravity * (_gravityMultiplier - 1) * _rb.mass, ForceMode.Force);
+            return;
+        }
 
         var trgSpeed = _inputVec.x * _moveSpeed;
-        trgSpeed = Mathf.Lerp(_rb.velocity.x, trgSpeed, 1);
-        var speedDiff = trgSpeed - _rb.velocity.x;
+        trgSpeed = Mathf.Lerp(_rb.linearVelocity.x, trgSpeed, 1);
+        var speedDiff = trgSpeed - _rb.linearVelocity.x;
         var accel = Mathf.Abs(trgSpeed) > 0.01f ? _accelRate : _deccelRate;
         var movement = speedDiff * accel;
 
         _rb.AddForce(movement * Vector3.right);
 
-        if (_rb.velocity.magnitude >= _velocityLimit)
+        if (_rb.linearVelocity.magnitude >= _velocityLimit)
         {
-            _rb.velocity *= _velocityLimit / _rb.velocity.magnitude;
+            _rb.linearVelocity *= _velocityLimit / _rb.linearVelocity.magnitude;
         }
 
         if (Mathf.Abs(_inputVec.x) < 0.01f)
         {
-            float friction = Mathf.Min(Mathf.Abs(_rb.velocity.x), Mathf.Abs(_frictionAmount));
-            friction *= Mathf.Sign(_rb.velocity.x);
+            float friction = Mathf.Min(Mathf.Abs(_rb.linearVelocity.x), Mathf.Abs(_frictionAmount));
+            friction *= Mathf.Sign(_rb.linearVelocity.x);
             _rb.AddForce(Vector3.right * -friction, ForceMode.Impulse);
         }
     }

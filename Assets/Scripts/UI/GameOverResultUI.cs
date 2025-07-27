@@ -11,6 +11,7 @@ public class GameOverResultUI : MonoBehaviour
         new(230, 255, 0),
         new(171, 171, 171),
         new(216, 118, 56),
+        new(128, 128, 128)
     };
 
     [SerializeField] Image _panel, _rankPanel;
@@ -22,9 +23,9 @@ public class GameOverResultUI : MonoBehaviour
         _playerName.text = Player.transform.name;
         _panel.color = Player.MaterialColor;
         _rank.text = rank.ToString();
-        _rankPanel.color = _rankColors[rank - 1];
+        _rankPanel.color = _rankColors[Mathf.Clamp(rank - 1,0,3)];
 
-        _panel.DOFade(1, 1f).From(0);
-        _playerName.DOFade(1, 1f).From(0);
+        _panel.DOFade(1, 0.5f).From(0);
+        _playerName.DOFade(1, 0.5f).From(0);
     }
 }

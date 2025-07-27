@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -24,6 +23,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameOverUI _gameOverUIController;
 
     public static GameManager Instance { get; private set; }
+    private bool isGameOver = false;
     private void Awake()
     {
         Instance = this;
@@ -68,18 +68,37 @@ public class GameManager : MonoBehaviour
 
     public void PlayerDied(GameObject player)
     {
+        if (isGameOver) return;
+
         WinnerStack.Push(player);
         AlivePlayers.Remove(player);
 
-        if (AlivePlayers.Count <= 1) GameOver();
+        if (AlivePlayers.Count <= 1)
+        {
+            isGameOver = true;
+            Vector3 finalKillPos = player.transform.position;
+            StartCoroutine(GameOver(finalKillPos));
+        }
     }
 
-    public void GameOver()
+    public IEnumerator GameOver(Vector3 finalKillPosition)
     {
         foreach (var player in Players)
         {
             player.GetComponent<PlayerController>().enabled = false;
         }
+
+        Time.timeScale = 0f;
+        yield return new WaitForSecondsRealtime(0.15f);
+
+        Time.timeScale = 0.1f;
+        CameraController cam = Camera.main.GetComponent<CameraController>();
+        cam.ZoomToPoint(finalKillPosition, zoomZOffset: 15f);
+        yield return new WaitForSecondsRealtime(1.2f);
+
+        Time.timeScale = 1f;
+        cam.ResetZoom();
+
         foreach (var alive in AlivePlayers)
         {
             WinnerStack.Push(alive);

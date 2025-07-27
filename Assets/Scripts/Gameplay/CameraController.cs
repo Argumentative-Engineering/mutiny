@@ -9,6 +9,10 @@ public class CameraController : MonoBehaviour
     float _boundsSize;
     GameManager _game;
 
+    private bool _zoomLocked = false;
+    private Vector3 _lockedPosition;
+    private float _lockedZ;
+
     void Start()
     {
         _game = GameManager.Instance;
@@ -16,6 +20,14 @@ public class CameraController : MonoBehaviour
 
     private void LateUpdate()
     {
+        if (_zoomLocked)
+        {
+            Vector3 target = _lockedPosition + _offset;
+            target.z = _lockedZ;
+            transform.position = Vector3.Lerp(transform.position, target, _followSpeed * Time.unscaledDeltaTime);
+            return;
+        }
+
         if (_game.AlivePlayers.Count == 0) return;
 
         var center = GetBoundsCenter();
@@ -30,13 +42,24 @@ public class CameraController : MonoBehaviour
         if (targets.Count == 1) return targets[0].transform.position;
 
         Bounds bounds = new(targets[0].transform.position, Vector3.zero);
-
         foreach (var target in targets)
         {
             bounds.Encapsulate(target.transform.position);
         }
-        _boundsSize = bounds.size.x;
 
+        _boundsSize = bounds.size.x;
         return bounds.center;
+    }
+
+    public void ZoomToPoint(Vector3 worldPosition, float zoomZOffset)
+    {
+        _zoomLocked = true;
+        _lockedPosition = worldPosition;
+        _lockedZ = -zoomZOffset;
+    }
+
+    public void ResetZoom()
+    {
+        _zoomLocked = false;
     }
 }

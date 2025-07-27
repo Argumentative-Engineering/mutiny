@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerBombThrow : MonoBehaviour
 {
@@ -22,6 +23,7 @@ public class PlayerBombThrow : MonoBehaviour
     [SerializeField] GameObject _bombPrefab;
     [SerializeField] Rigidbody _rb;
     [SerializeField] PlayerController _playerController;
+    [SerializeField] Image _arrowFill;
 
 
     void Start()
@@ -52,7 +54,7 @@ public class PlayerBombThrow : MonoBehaviour
             if (CooldownLeft <= 0)
             {
                 // throw bomb and push me back
-                var bomb = Instantiate(_bombPrefab, _bombThrowPoint.position, Quaternion.identity).GetComponent<Rigidbody>();
+                var bomb = BombPool.Instance.SpawnBomb(_bombThrowPoint.position, Quaternion.identity).GetComponent<Rigidbody>();
                 bomb.GetComponent<Bomb>().Owner = gameObject;
 
                 bomb.AddForce(AimVector * _bombThrowForce, ForceMode.Force);
@@ -78,7 +80,10 @@ public class PlayerBombThrow : MonoBehaviour
         }
 
         if (CooldownLeft > 0)
+        {
             CooldownLeft -= Time.deltaTime;
+            _arrowFill.fillAmount = Mathf.Clamp(CooldownLeft / _cooldown, 0f, 1f);
+        }
 
         if (IsAiming) {
             if (AirTime > 0)

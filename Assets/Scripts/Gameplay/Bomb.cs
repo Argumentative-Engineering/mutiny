@@ -19,7 +19,7 @@ public class Bomb : MonoBehaviour
 
     float _timer;
 
-    void Start()
+    private void OnEnable()
     {
         _timer = _timeTillExplode;
     }
@@ -34,26 +34,26 @@ public class Bomb : MonoBehaviour
             {
                 Explode(col);
             }
-            Destroy(Instantiate(_bombExplodeVFX, transform.position, Quaternion.identity), 3);
-            Destroy(gameObject);
+            BOOM();
         }
         else
         {
             _timer -= Time.deltaTime;
         }
 
-        _timerText.text = ((int)_timer).ToString();
+        _timerText.text = (Mathf.FloorToInt(_timer)).ToString();
     }
 
     private void OnCollisionEnter(Collision other)
     {
         if (other.collider.CompareTag("Player") && other.gameObject != Owner)
         {
-            Explode(other.collider, destroy: true);
+            Explode(other.collider);
+            BOOM();
         }
     }
 
-    void Explode(Collider col, bool destroy = false)
+    void Explode(Collider col)
     {
         if (col.TryGetComponent(out Rigidbody rb))
         {
@@ -70,12 +70,17 @@ public class Bomb : MonoBehaviour
             health.Damage(dmg, dir);
             health.Stun(_stunDuration);
         }
+    }
 
-        if (destroy)
-        {
-            Destroy(Instantiate(_bombExplodeVFX, transform.position, Quaternion.identity), 3);
-            Destroy(gameObject);
-        }
+    void BOOM()
+    {
+        ExplosionVFXPool.Instance.SpawnExplosion(transform.position, 3);
+        BombPool.Instance.ReturnToPool(gameObject);
+    }
+
+    public void ResetBomb()
+    {
+
     }
 
     private void OnDrawGizmos()

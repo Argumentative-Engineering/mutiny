@@ -11,11 +11,11 @@ public class PlayerAnimation : MonoBehaviour
 
     void Update()
     {
-        _anim.SetFloat("Horizontal", Mathf.Abs(_rb.velocity.x));
-        _anim.SetBool("IsJumping", Mathf.Abs(_rb.velocity.normalized.y) > 0.1f);
+        _anim.SetFloat("Horizontal", Mathf.Abs(_rb.linearVelocity.x));
+        _anim.SetBool("IsJumping", Mathf.Abs(_rb.linearVelocity.normalized.y) > 0.1f);
         _anim.SetBool("IsAiming", _thrower.IsAiming);
 
-        var vec = _thrower.IsAiming ? _thrower.AimVector : _rb.velocity;
+        var vec = _thrower.IsAiming ? _thrower.AimVector : _rb.linearVelocity;
         if (vec.magnitude > 0.5f)
         {
             _renderer.flipX = vec.x < -0.2f;

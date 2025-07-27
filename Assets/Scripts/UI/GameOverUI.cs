@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -21,9 +20,9 @@ public class GameOverUI : MonoBehaviour
     {
         gameObject.SetActive(true);
         var seq = DOTween.Sequence();
-        seq.Append(_bg.DOFade(1, 1).From(0))
+        seq.Append(_bg.DOFade(1, 0.5f).From(0))
             .Append(_gameOverHeader.DOFade(1, 0.5f).From(0).OnPlay(() => _gameOverHeader.gameObject.SetActive(true)))
-            .Append(_gameOverHeader.transform.DOLocalMoveY(360, 2).SetEase(Ease.OutBounce));
+            .Append(_gameOverHeader.transform.DOLocalMoveY(360, 1f).SetEase(Ease.OutBounce));
 
         seq.Play().OnComplete(() =>
         {
@@ -47,9 +46,9 @@ public class GameOverUI : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyUp(KeyCode.R))
+        if (Input.GetKeyUp(KeyCode.R) || Input.GetKeyUp(KeyCode.X) || Input.GetKeyUp(KeyCode.B) || Input.GetKeyUp(KeyCode.JoystickButton2))
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            SceneLoader.Instance.LoadRandomScene();
         }
     }
 
