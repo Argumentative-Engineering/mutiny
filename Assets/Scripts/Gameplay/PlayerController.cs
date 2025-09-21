@@ -151,7 +151,11 @@ public class PlayerController : MonoBehaviour
     {
         if (_thrower.IsAiming)
         {
-            if (_rb.linearVelocity.y < 0) _rb.AddForce(Vector2.up * Physics.gravity * (_gravityMultiplier - 1) * _rb.mass, ForceMode.Force);
+            //if (_rb.linearVelocity.y < 0) 
+            //  _rb.AddForce(Vector2.up * Physics.gravity * (_gravityMultiplier - 1) * _rb.mass, ForceMode.Force);
+
+            // bullet time style 
+            _rb.AddForce(_prevVel.normalized * Physics.gravity * _gravityMultiplier * _rb.mass, ForceMode.Force);
             return;
         }
 
@@ -182,3 +186,4 @@ public class PlayerController : MonoBehaviour
         Gizmos.DrawWireCube(_groundCheckPoint.position, _groundCheckSize);
     }
 }
+
