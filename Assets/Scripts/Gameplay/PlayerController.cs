@@ -16,7 +16,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float _coyoteTime = 0.5f;
     [SerializeField] float _jumpForce = 10f;
     [SerializeField] float _velocityLimit = 1000f;
-    [SerializeField] float _gravityMultiplier = 0.2f;
+    [SerializeField] float _aimDrag = 1f;
 
     [Header("Collision")]
     [SerializeField] Vector3 _groundCheckSize;
@@ -87,7 +87,7 @@ public class PlayerController : MonoBehaviour
         if (_thrower.StartAiming() && !_health.IsStunned)
         {
             _prevVel = _rb.linearVelocity;
-            _rb.linearVelocity = Vector3.zero;
+            //_rb.linearVelocity = Vector3.zero;
         }
     }
 
@@ -101,7 +101,7 @@ public class PlayerController : MonoBehaviour
         if (_thrower.EndAiming())
         {
             _audio.PlayOneShot(_throwSFX, 3);
-            _rb.linearVelocity = _prevVel;
+            //_rb.linearVelocity = _prevVel;
         }
     }
 
@@ -151,13 +151,9 @@ public class PlayerController : MonoBehaviour
     {
         if (_thrower.IsAiming)
         {
-            //if (_rb.linearVelocity.y < 0) 
-            //  _rb.AddForce(Vector2.up * Physics.gravity * (_gravityMultiplier - 1) * _rb.mass, ForceMode.Force);
-
-            // bullet time style 
-            _rb.AddForce(_prevVel.normalized * Physics.gravity * _gravityMultiplier * _rb.mass, ForceMode.Force);
+            _rb.linearDamping = _aimDrag;
             return;
-        }
+        } else _rb.linearDamping = 0f;
 
         var trgSpeed = _inputVec.x * _moveSpeed;
         trgSpeed = Mathf.Lerp(_rb.linearVelocity.x, trgSpeed, 1);
@@ -169,7 +165,9 @@ public class PlayerController : MonoBehaviour
 
         if (_rb.linearVelocity.magnitude >= _velocityLimit)
         {
-            _rb.linearVelocity *= _velocityLimit / _rb.linearVelocity.magnitude;
+            float excess = _rb.linearVelocity.magnitude - _velocityLimit;
+            Vector3 counterForce = -_rb.linearVelocity.normalized * excess * _rb.mass;
+            _rb.AddForce(counterForce, ForceMode.Force);
         }
 
         if (Mathf.Abs(_inputVec.x) < 0.01f)

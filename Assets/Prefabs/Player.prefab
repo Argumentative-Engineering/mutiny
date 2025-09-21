@@ -636,7 +636,7 @@ MonoBehaviour:
   _coyoteTime: 0.2
   _jumpForce: 13
   _velocityLimit: 1000
-  _gravityMultiplier: 0.2
+  _aimDrag: 4
   _groundCheckSize: {x: 1, y: 1, z: 1}
   _groundLayer:
     serializedVersion: 2
