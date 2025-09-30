@@ -7,16 +7,10 @@ public class CameraController : MonoBehaviour
     [SerializeField] Vector3 _offset;
 
     float _boundsSize;
-    GameManager _game;
 
     private bool _zoomLocked = false;
     private Vector3 _lockedPosition;
     private float _lockedZ;
-
-    void Start()
-    {
-        _game = GameManager.Instance;
-    }
 
     private void LateUpdate()
     {
@@ -28,7 +22,7 @@ public class CameraController : MonoBehaviour
             return;
         }
 
-        if (_game.AlivePlayers.Count == 0) return;
+        if (GameManager.Instance.AlivePlayers.Count == 0) return;
 
         var center = GetBoundsCenter();
         center.z = -Mathf.Lerp(_zoomLimits.x, _zoomLimits.y, _boundsSize / _zoomLimits.y);
@@ -38,7 +32,7 @@ public class CameraController : MonoBehaviour
 
     Vector3 GetBoundsCenter()
     {
-        var targets = _game.AlivePlayers;
+        var targets = GameManager.Instance.AlivePlayers;
         if (targets.Count == 1) return targets[0].transform.position;
 
         Bounds bounds = new(targets[0].transform.position, Vector3.zero);

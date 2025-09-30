@@ -5,65 +5,81 @@ using UnityEngine.InputSystem;
 
 public class GameManager : MonoBehaviour
 {
-    [Header("Settings")]
-    [SerializeField] List<Color> _playerColors = new();
-    [field: SerializeField]
-    public List<GameObject> Players { get; private set; }
-    public List<GameObject> AlivePlayers { get; set; } = new();
-
+    public List<GameObject> AlivePlayers { get; private set; } = new();
     public readonly Stack<GameObject> WinnerStack = new();
 
-    [SerializeField] List<Transform> _playerSpawnPoints;
-    int _nextSpawn;
-
     [Header("References")]
-    [SerializeField] PlayerInputManager _inputManager;
-    [SerializeField] GameObject _healthBarsUIGroup;
-    [SerializeField] GameObject _healthBarPrefab;
-    [SerializeField] GameOverUI _gameOverUIController;
+    [SerializeField] private GameObject _playerPrefab;
+    [SerializeField] private PlayerInputManager _inputManager;
+    [SerializeField] private GameObject _healthBarsUIGroup;
+    [SerializeField] private GameObject _healthBarPrefab;
+    [SerializeField] private GameOverUI _gameOverUIController;
+    [SerializeField] private List<Transform> _playerSpawnPoints;
+    private int _nextSpawn;
 
     public static GameManager Instance { get; private set; }
     private bool isGameOver = false;
+
     private void Awake()
     {
         Instance = this;
     }
 
-    void OnEnable()
+    private void OnEnable()
     {
         _inputManager.onPlayerJoined += OnPlayerJoined;
-        _inputManager.onPlayerLeft += OnPlayerLeft;
     }
 
     private void OnDisable()
     {
         _inputManager.onPlayerJoined -= OnPlayerJoined;
-        _inputManager.onPlayerLeft -= OnPlayerLeft;
     }
 
-    private void OnPlayerLeft(PlayerInput input)
+    private void Start()
     {
-        Players.Remove(input.gameObject);
+        _nextSpawn = 0;
+        AlivePlayers.Clear();
+        WinnerStack.Clear();
+
+        foreach (var slot in PlayerRoster.Instance.Slots)
+        {
+            if (slot.handle == null || !slot.isActive) continue;
+            SpawnPlayer(slot);
+        }
     }
 
     private void OnPlayerJoined(PlayerInput input)
     {
-        if (Players.Count == 0) MusicManager.Instance.PlayMusic();
-        Players.Add(input.gameObject);
-        AlivePlayers.Add(input.gameObject);
-        if (_playerSpawnPoints.Count == 0) return;
+        PlayerRoster.Instance.RegisterPlayer(input);
 
-        var spawn = _playerSpawnPoints[_nextSpawn];
+        var slot = PlayerRoster.Instance.Slots[input.playerIndex];
+        if (slot.handle != null)
+            SpawnPlayer(slot);
+    }
+
+    private void SpawnPlayer(PlayerRoster.PlayerSlot slot)
+    {
+        Vector3 spawnPos = _playerSpawnPoints[_nextSpawn].position;
         _nextSpawn = (_nextSpawn + 1) % _playerSpawnPoints.Count;
-        input.GetComponent<Rigidbody>().position = spawn.position;
 
-        var number = Players.Count - 1;
-        input.GetComponent<PlayerInfo>().SetColor(number, _playerColors[number]);
+        GameObject player = Instantiate(_playerPrefab, spawnPos, Quaternion.identity);
 
-        var health = Instantiate(_healthBarPrefab, _healthBarsUIGroup.transform).GetComponent<PlayerHealthUI>();
-        health.Player = input.GetComponent<PlayerInfo>();
-        health.PlayerHealth = input.GetComponent<PlayerHealth>();
-        health.UpdateText();
+        var connector = slot.handle;
+        if (connector != null)
+        {
+            connector.AttachToPlayer(player);
+        }
+
+        var info = player.GetComponent<PlayerInfo>();
+        info.SetColor(slot.playerIndex, slot.playerColor);
+
+        var healthUI = Instantiate(_healthBarPrefab, _healthBarsUIGroup.transform)
+            .GetComponent<PlayerHealthUI>();
+        healthUI.Player = info;
+        healthUI.PlayerHealth = player.GetComponent<PlayerHealth>();
+        healthUI.UpdateText();
+
+        AlivePlayers.Add(player);
     }
 
     public void PlayerDied(GameObject player)
@@ -81,9 +97,9 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public IEnumerator GameOver(Vector3 finalKillPosition)
+    private IEnumerator GameOver(Vector3 finalKillPosition)
     {
-        foreach (var player in Players)
+        foreach (var player in AlivePlayers)
         {
             player.GetComponent<PlayerController>().enabled = false;
         }
