@@ -6,6 +6,7 @@ public class PlayerBombThrow : MonoBehaviour
 {
     public bool IsAiming { get; set; }
     public Vector3 InputVector { get; set; }
+    public Vector3 AlternateInputVector { get; set; }
     public Vector3 AimVector { get; private set; }
     public bool IsMouse { get; set; }
 
@@ -87,6 +88,7 @@ public class PlayerBombThrow : MonoBehaviour
     void Update()
     {
         Vector3 dir = IsMouse ? GetMouseVector() : InputVector;
+        dir = !IsMouse && InputVector.magnitude < 0.1f ? AlternateInputVector : dir;
         dir.z = 0;
 
         if (dir.magnitude > (IsMouse ? 0 : 0.2f))

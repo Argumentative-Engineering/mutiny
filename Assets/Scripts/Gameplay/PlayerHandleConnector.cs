@@ -22,6 +22,7 @@ public class PlayerHandleConnector : MonoBehaviour
         _playerInput.FindAction("Move").canceled += OnMoveCancelled;
         _playerInput.FindAction("Jump").performed += OnJumpPerformed;
         _playerInput.FindAction("Aim").performed += OnAimPerformed;
+        _playerInput.FindAction("Aim").canceled += OnAimCancelled;
         _playerInput.FindAction("Fire").performed += OnFirePerformed;
         _playerInput.FindAction("Fire").canceled += OnFireCancelled;
         _playerInput.FindAction("Leave").performed += OnLeave;
@@ -62,6 +63,7 @@ public class PlayerHandleConnector : MonoBehaviour
     }
 
     public void OnAimPerformed(InputAction.CallbackContext context) => _controlledPlayer?.XOnAimPerformed(context);
+    public void OnAimCancelled(InputAction.CallbackContext context) => _controlledPlayer?.XOnAimCancelled(context);
     public void OnFirePerformed(InputAction.CallbackContext context) => _controlledPlayer?.XOnFirePerformed(context);
     public void OnFireCancelled(InputAction.CallbackContext context) => _controlledPlayer?.XOnFireCancelled(context);
     public void OnMovePerformed(InputAction.CallbackContext context) => _controlledPlayer?.XOnMovePerformed(context);

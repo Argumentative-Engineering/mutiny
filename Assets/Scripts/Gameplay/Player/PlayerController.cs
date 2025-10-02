@@ -53,6 +53,8 @@ public class PlayerController : MonoBehaviour
         _thrower.InputVector = context.ReadValue<Vector2>();
     }
 
+    public void XOnAimCancelled(InputAction.CallbackContext context) => _thrower.InputVector = Vector2.zero;
+
     public void XOnFirePerformed(InputAction.CallbackContext context)
     {
         _thrower.StartAiming();
@@ -75,6 +77,7 @@ public class PlayerController : MonoBehaviour
     {
         if (_health.IsStunned) return;
         _inputVec = context.ReadValue<Vector2>();
+        _thrower.AlternateInputVector = context.ReadValue<Vector2>();
         if (_isMouse && _inputVec.y > 0) Jump();
 
         _inputVec.y = 0;

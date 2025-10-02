@@ -231,6 +231,17 @@
                 },
                 {
                     "name": "",
+                    "id": "1fa55df3-e685-43dd-b2aa-5eb6319c1958",
+                    "path": "<Gamepad>/rightStick",
+                    "interactions": "Press(pressPoint=0.01)",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Fire",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "4b37cca1-311e-42ee-b8f7-f908bd693610",
                     "path": "<Keyboard>/space",
                     "interactions": "",
@@ -269,17 +280,6 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "Aim",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "9d755896-956f-4225-bc71-9cf0a0e6f98d",
-                    "path": "<Gamepad>/leftStick",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Gamepad",
                     "action": "Aim",
                     "isComposite": false,
                     "isPartOfComposite": false
