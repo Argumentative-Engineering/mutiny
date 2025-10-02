@@ -10,6 +10,7 @@ public class PlayerHandleConnector : MonoBehaviour
     public InputActionMap _playerInput { get; private set; }
 
     public PlayerController _controlledPlayer;
+    public PlayerRoster.PlayerSlot _slot;
 
     private void Awake()
     {
@@ -26,7 +27,14 @@ public class PlayerHandleConnector : MonoBehaviour
         _playerInput.FindAction("Fire").performed += OnFirePerformed;
         _playerInput.FindAction("Fire").canceled += OnFireCancelled;
         _playerInput.FindAction("Leave").performed += OnLeave;
+        _playerInput.FindAction("Join").performed += OnJoin;
     }
+
+    public void Initialize (PlayerRoster.PlayerSlot slot)
+    {
+        _slot = slot;
+    }
+
     private void OnEnable()
     {
         _playerInput.Enable();
@@ -40,8 +48,11 @@ public class PlayerHandleConnector : MonoBehaviour
         _playerInput.FindAction("Move").canceled -= OnMoveCancelled;
         _playerInput.FindAction("Jump").performed -= OnJumpPerformed;
         _playerInput.FindAction("Aim").performed -= OnAimPerformed;
+        _playerInput.FindAction("Aim").canceled -= OnAimCancelled;
         _playerInput.FindAction("Fire").performed -= OnFirePerformed;
         _playerInput.FindAction("Fire").canceled -= OnFireCancelled;
+        _playerInput.FindAction("Leave").performed -= OnLeave;
+        _playerInput.FindAction("Join").performed -= OnJoin;
     }
 
     public void AttachToPlayer(GameObject player)
@@ -55,11 +66,17 @@ public class PlayerHandleConnector : MonoBehaviour
         if (_controlledPlayer != null) _controlledPlayer = null;
     }
 
+    public void OnJoin(InputAction.CallbackContext context)
+    {
+        if (_slot.isActive || _slot.diedThisRound) return;
+        PlayerRoster.Instance.RegisterPlayer(_player);
+        GameManager.Instance.SpawnPlayer(_slot);
+    }
+
     public void OnLeave(InputAction.CallbackContext context)
     {
         PlayerRoster.Instance.UnregisterPlayer(_player);
-        _controlledPlayer.GetComponent<PlayerHealth>().Die(Vector3.zero);
-        Destroy(gameObject);
+        _controlledPlayer.GetComponent<PlayerHealth>().Damage(9999f, Vector3.zero);
     }
 
     public void OnAimPerformed(InputAction.CallbackContext context) => _controlledPlayer?.XOnAimPerformed(context);

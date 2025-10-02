@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static UnityEngine.GraphicsBuffer;
 
 public class GameManager : MonoBehaviour
 {
@@ -48,7 +49,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void OnPlayerJoined(PlayerInput input)
+    public void OnPlayerJoined(PlayerInput input)
     {
         PlayerRoster.Instance.RegisterPlayer(input);
 
@@ -57,7 +58,7 @@ public class GameManager : MonoBehaviour
             SpawnPlayer(slot);
     }
 
-    private void SpawnPlayer(PlayerRoster.PlayerSlot slot)
+    public void SpawnPlayer(PlayerRoster.PlayerSlot slot)
     {
         Vector3 spawnPos = _playerSpawnPoints[_nextSpawn].position;
         _nextSpawn = (_nextSpawn + 1) % _playerSpawnPoints.Count;
@@ -88,12 +89,26 @@ public class GameManager : MonoBehaviour
 
         WinnerStack.Push(player);
         AlivePlayers.Remove(player);
+        FindPlayer(PlayerRoster.Instance.Slots, player.GetComponent<PlayerController>());
 
         if (AlivePlayers.Count <= 1)
         {
             isGameOver = true;
             Vector3 finalKillPos = player.transform.position;
             StartCoroutine(GameOver(finalKillPos));
+        }
+    }
+
+    private void FindPlayer(PlayerRoster.PlayerSlot[] slots, PlayerController player)
+    {
+        for (int i = 0; i < slots.Length; i++)
+        {
+            if (slots[i].handle == null) continue;
+            if (slots[i].handle._player == player)
+            {
+                slots[i].diedThisRound = true;
+                break;
+            }
         }
     }
 

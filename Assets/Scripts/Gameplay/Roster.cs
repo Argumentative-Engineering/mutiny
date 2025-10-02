@@ -12,6 +12,7 @@ public class PlayerRoster : MonoBehaviour
         public Color playerColor;
         public PlayerHandleConnector handle;
         public bool isActive;
+        public bool diedThisRound;
     }
 
     [SerializeField] private int _maxPlayers = 10;
@@ -38,7 +39,8 @@ public class PlayerRoster : MonoBehaviour
                 playerIndex = i,
                 playerColor = i < _defaultColors.Length ? _defaultColors[i] : Color.white,
                 handle = null,
-                isActive = false
+                isActive = false,
+                diedThisRound = false
             };
         }
     }
@@ -58,6 +60,7 @@ public class PlayerRoster : MonoBehaviour
             ? _defaultColors[input.playerIndex]
             : Color.white;
         slot.handle = connector;
+        slot.handle.Initialize(slot);
         slot.isActive = true;
     }
 
@@ -66,5 +69,6 @@ public class PlayerRoster : MonoBehaviour
         var slot = Slots[input.playerIndex];
         slot.handle = null;
         slot.isActive = false;
+        slot.diedThisRound = true;
     }
 }
