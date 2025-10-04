@@ -42,6 +42,8 @@ public class GameManager : MonoBehaviour
         AlivePlayers.Clear();
         WinnerStack.Clear();
 
+        PlayerRoster.Instance.StageReset();
+
         foreach (var slot in PlayerRoster.Instance.Slots)
         {
             if (slot.handle == null || !slot.isActive) continue;

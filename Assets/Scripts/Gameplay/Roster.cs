@@ -45,6 +45,14 @@ public class PlayerRoster : MonoBehaviour
         }
     }
 
+    public void StageReset()
+    {
+        for (int i = 0; i < _maxPlayers; i++)
+        {
+            Slots[i].diedThisRound = false;
+        }
+    }
+
     public void RegisterPlayer(PlayerInput input)
     {
         var connector = input.GetComponent<PlayerHandleConnector>();
