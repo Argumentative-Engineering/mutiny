@@ -44,12 +44,4 @@ public class GameOverUI : MonoBehaviour
         }
     }
 
-    void Update()
-    {
-        if (Input.GetKeyUp(KeyCode.R) || Input.GetKeyUp(KeyCode.X) || Input.GetKeyUp(KeyCode.B) || Input.GetKeyUp(KeyCode.JoystickButton2))
-        {
-            SceneLoader.Instance.LoadRandomScene();
-        }
-    }
-
 }

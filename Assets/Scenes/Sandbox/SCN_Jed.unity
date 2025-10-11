@@ -7792,6 +7792,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4817282858467929308, guid: 7e2e13f8056304545ba16f05427decc2,
+        type: 3}
+      propertyPath: m_text
+      value: Press 'R' or 'R1' to play again!
+      objectReference: {fileID: 0}
+    - target: {fileID: 6253730629684908607, guid: 7e2e13f8056304545ba16f05427decc2,
+        type: 3}
+      propertyPath: _playerSpawnPoints.Array.size
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 6253730629684908607, guid: 7e2e13f8056304545ba16f05427decc2,
         type: 3}
       propertyPath: '_playerSpawnPoints.Array.data[0]'

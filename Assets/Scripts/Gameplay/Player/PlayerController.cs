@@ -35,6 +35,7 @@ public class PlayerController : MonoBehaviour
     Vector2 _inputVec;
     Rigidbody _rb;
 
+    float aimTimer = 0f;
     int _jumpCount = 0;
 
     void Awake()
@@ -51,6 +52,7 @@ public class PlayerController : MonoBehaviour
     public void XOnAimPerformed(InputAction.CallbackContext context)
     {
         _thrower.InputVector = context.ReadValue<Vector2>();
+        aimTimer = 0.3f;
     }
 
     public void XOnAimCancelled(InputAction.CallbackContext context) => _thrower.InputVector = Vector2.zero;
@@ -77,7 +79,7 @@ public class PlayerController : MonoBehaviour
     {
         if (_health.IsStunned) return;
         _inputVec = context.ReadValue<Vector2>();
-        _thrower.AlternateInputVector = context.ReadValue<Vector2>();
+        _thrower.AlternateInputVector = aimTimer <= 0f && _thrower.IsAiming ? context.ReadValue<Vector2>() : Vector2.zero;
         if (_isMouse && _inputVec.y > 0) Jump();
 
         _inputVec.y = 0;
@@ -114,6 +116,8 @@ public class PlayerController : MonoBehaviour
         {
             _coyoteTimer -= Time.deltaTime;
         }
+
+        if(aimTimer > 0) aimTimer -= Time.deltaTime;
     }
 
     void FixedUpdate()

@@ -59,6 +59,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Restart",
+                    "type": "Button",
+                    "id": "075e4a58-12c3-4cf2-af0b-c6ec97923e32",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -242,7 +251,7 @@
                     "name": "",
                     "id": "1fa55df3-e685-43dd-b2aa-5eb6319c1958",
                     "path": "<Gamepad>/rightStick",
-                    "interactions": "Press(pressPoint=0.01)",
+                    "interactions": "Press(pressPoint=0.1)",
                     "processors": "",
                     "groups": "Gamepad",
                     "action": "Fire",
@@ -334,6 +343,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "Join",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "31abf0aa-f210-40fb-a1f5-5638764974bd",
+                    "path": "<Keyboard>/r",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Restart",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3bedfca8-ac7c-4422-8cbc-221a02aaac33",
+                    "path": "<Gamepad>/rightShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Restart",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

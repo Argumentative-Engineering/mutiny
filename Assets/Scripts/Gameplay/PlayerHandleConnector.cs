@@ -28,6 +28,7 @@ public class PlayerHandleConnector : MonoBehaviour
         _playerInput.FindAction("Fire").canceled += OnFireCancelled;
         _playerInput.FindAction("Leave").performed += OnLeave;
         _playerInput.FindAction("Join").performed += OnJoin;
+        _playerInput.FindAction("Restart").performed += OnRestart;
     }
 
     public void Initialize (PlayerRoster.PlayerSlot slot)
@@ -58,7 +59,7 @@ public class PlayerHandleConnector : MonoBehaviour
     public void AttachToPlayer(GameObject player)
     {
         _controlledPlayer = player.GetComponent<PlayerController>();
-        //if (_controlledPlayer!=null && _player.currentControlScheme == "Keyboard&Mouse") _controlledPlayer.SetMouse();
+        if (_controlledPlayer!=null && GetComponent<PlayerInput>().currentControlScheme == "Keyboard&Mouse") _controlledPlayer.SetMouse();
     }
 
     public void Detach()
@@ -77,6 +78,11 @@ public class PlayerHandleConnector : MonoBehaviour
     {
         PlayerRoster.Instance.UnregisterPlayer(_player);
         _controlledPlayer.GetComponent<PlayerHealth>().Damage(9999f, Vector3.zero);
+    }
+
+    public void OnRestart(InputAction.CallbackContext context)
+    {
+        GameManager.Instance.Restart();
     }
 
     public void OnAimPerformed(InputAction.CallbackContext context) => _controlledPlayer?.XOnAimPerformed(context);

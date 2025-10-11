@@ -95,10 +95,15 @@ public class GameManager : MonoBehaviour
 
         if (AlivePlayers.Count <= 1)
         {
-            isGameOver = true;
+            Invoke(nameof(SetGameOver), 2f);
             Vector3 finalKillPos = player.transform.position;
             StartCoroutine(GameOver(finalKillPos));
         }
+    }
+
+    void SetGameOver()
+    {
+        isGameOver = true;
     }
 
     private void FindPlayer(PlayerRoster.PlayerSlot[] slots, PlayerController player)
@@ -139,5 +144,11 @@ public class GameManager : MonoBehaviour
 
         _gameOverUIController.gameObject.SetActive(true);
         _gameOverUIController.GameOver();
+    }
+
+    public void Restart()
+    {
+        if(!isGameOver) return;
+        SceneLoader.Instance.LoadRandomScene();
     }
 }
